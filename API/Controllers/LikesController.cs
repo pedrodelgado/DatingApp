@@ -56,10 +56,8 @@ namespace API.Controllers
             var pag = new PaginationHeader(users.CurrentPage,
             users.TotalPages, users.TotalCount, users.TotalPages);
             
-            Response.AddPaginationHeader(pag.CurrentPage,pag.ItemsPerPage,pag.TotalItems,pag.TotalPages);
-
-            // Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage,
-            // users.TotalPages, users.TotalCount, users.TotalPages));
+             Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, 
+             users.TotalPages, users.TotalCount, users.TotalPages));
             
             return Ok(users);
         }
