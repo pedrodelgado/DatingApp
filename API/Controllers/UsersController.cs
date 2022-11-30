@@ -12,7 +12,6 @@ using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -32,7 +31,7 @@ namespace API.Controllers
         }
         
         [HttpGet]
-        // [AllowAnonymous]
+
         public async Task<ActionResult<PagedList<MemberDTO>>> GetUsers([FromQuery]UserParams userParams)
         {
             var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
@@ -49,7 +48,7 @@ namespace API.Controllers
             return Ok(users);
 
         }
-        
+
         [HttpGet("{username}", Name="GetUser")]
         public async Task<ActionResult<MemberDTO>> GetUser(string username)
         {
