@@ -49,6 +49,10 @@ namespace API.Data
             return await PagedList<MemberDTO>.CreateAsync(query.ProjectTo<MemberDTO>(_mapper.ConfigurationProvider).AsNoTracking(),
             userParams.PageNumber,userParams.PageSize);
         }
+        public async Task<String> GetUserGender(string username)
+        {
+            return await _context.Users.Where(x => x.UserName == username).Select(x => x.Gender).FirstOrDefaultAsync();
+        }
         
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
@@ -67,11 +71,6 @@ namespace API.Data
             return await _context.Users
             .Include(p => p.Photos)
             .SingleOrDefaultAsync(x => x.UserName == username);
-        }
-
-        public async Task<bool> SaveAllAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
         }
 
         public void Update(AppUser user)
