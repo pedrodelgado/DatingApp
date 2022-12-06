@@ -23,7 +23,7 @@ builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddCors();
 builder.Services.AddIdentityServices(builder.Configuration);
-// builder.Services.AddSignalR();
+builder.Services.AddSignalR();
 
 // Configure the HTTP request pipeline
 
@@ -35,7 +35,8 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
-app.UseCors(x => x.AllowAnyHeader()
+app.UseCors(builder => builder
+    .AllowAnyHeader()
     .AllowAnyMethod()
     .AllowCredentials()
     .WithOrigins("https://localhost:4200"));
@@ -47,8 +48,8 @@ app.UseAuthorization();
 //app.UseStaticFiles();
 
 app.MapControllers();
-// app.MapHub<PresenceHub>("hubs/presence");
-// app.MapHub<MessageHub>("hubs/message");
+app.MapHub<PresenceHub>("hubs/presence");
+app.MapHub<MessageHub>("hubs/message");
 //app.MapFallbackToController("Index", "Fallback");
 
 //AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -61,6 +62,8 @@ try
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
     var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
     await context.Database.MigrateAsync();
+    // await context.Database.ExecuteSqlRawAsync("TRUNCATE TABLE [Connections]");
+    await context.Database.ExecuteSqlRawAsync("DELETE FROM [Connections]");
     await Seed.SeedUsers(userManager, roleManager);
 }
 catch (Exception ex)
