@@ -26,10 +26,7 @@ namespace API.Extensions
             services.AddSingleton<PresenceTracker>();
             services.AddScoped<IUnitOfWork,UnitOfWork>();
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
-            services.AddDbContext<DataContext> (options =>
-            {
-                options.UseSqlite(config.GetConnectionString("DefaultConnection"));
-            });
+
             return services;
         }
     }
